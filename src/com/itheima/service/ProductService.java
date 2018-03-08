@@ -55,5 +55,9 @@ public class ProductService {
 		pageBean.setProductList(productList);
 		return pageBean;
 	}
+	//根据关键字查询商品
+	public List<Object> findProductByWord(String word) throws SQLException {
+		return dao.findProductByWord(word);
+	}
 
 }
