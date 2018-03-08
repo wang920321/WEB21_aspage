@@ -29,6 +29,52 @@ font {
 	padding: 0 10px;
 }
 </style>
+<script type="text/javascript">
+   $(function(){
+	   //为输入框绑定事件
+	    $("#username").blur(function(){
+	    	//1获得失去焦点获得输入框的内容
+	    	var usernameInput=$(this).val();
+	    	//2去服务端校验用户名是否存在--ajax
+	    	$.post(
+	    	    "${pageContext.request.contextPath}/checkUsername",
+	    	    {"username":usernameInput},
+	    	    function(data){
+	    	    	var isExist=data.isExist;
+	    	    	//3根据返回的isExist动态显示信息
+	    	    	var usernameInfo="";
+	    	    	if(isExist){
+	    	    		//该用户存在
+	    	    		usernameInfo="该用户名已经存在";
+	    	    		$("#usernameInfo").css("color","red");
+	    	    	}else{
+	    	    		usernameInfo="该用户名可以使用";
+	    	    		$("#usernameInfo").css("color","green");
+	    	    	}
+	    	    	$("#usernameInfo").html(usernameInfo);
+	    	    },
+	    	    "json"
+	    	);
+	    });
+   });
+    
+    /* function checkUsername(){
+    	$.ajax({
+    		url:"/${pageContext.request.contextPath}/check",
+    		async:true,
+    		type:"post",
+    		data:"",
+    		success:function(){
+    			$("#spanUsername").prop="keyiyong";
+    		},
+    		error:function(){
+    			$("#spanUsername").prop="bukeyiyong";
+    		},
+    		dataType:"json"
+    	});
+    } */
+
+</script>
 </head>
 <body>
 
@@ -44,10 +90,12 @@ font {
 				<font>会员注册</font>USER REGISTER
 				<form class="form-horizontal" style="margin-top: 5px;">
 					<div class="form-group">
-						<label for="username" class="col-sm-2 control-label">用户名</label>
+						<label  for="username" class="col-sm-2 control-label" >用户名</label>
+					
 						<div class="col-sm-6">
 							<input type="text" class="form-control" id="username"
 								placeholder="请输入用户名">
+							<span id=usernameInfo></span>	
 						</div>
 					</div>
 					<div class="form-group">
